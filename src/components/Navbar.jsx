@@ -1,3 +1,5 @@
+import CartWidget from './CartWidget'
+
 function Navbar({ logoUrl }) {
     return (
         <nav style={{ backgroundColor: 'black', position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000, padding: '10px 20px' }}>
@@ -33,7 +35,7 @@ function Navbar({ logoUrl }) {
                 </a>
             </li>
             </ul>
-
+            <CartWidget />
         </div>
         </nav>
     )
