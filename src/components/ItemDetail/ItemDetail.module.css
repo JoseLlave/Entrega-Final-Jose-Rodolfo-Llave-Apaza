@@ -1,0 +1,40 @@
+.detailCard {
+  background-color: #1e1e1e;
+  border: 1px solid #333;
+  color: #e0e0e0;
+}
+
+.detailImage {
+  max-height: 500px;
+  object-fit: contain;
+  background-color: #2a2a2a;
+  padding: 2rem;
+  border-radius: 8px;
+}
+
+.detailTitle {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.detailSubtitle {
+  color: #aaaaaa !important;
+}
+
+.detailPrice {
+  color: #4dabf7;
+  font-size: 2rem;
+}
+
+.detailDescription {
+  color: #cccccc;
+  line-height: 1.8;
+}
+
+.actionButton {
+  transition: transform 0.2s ease;
+}
+
+.actionButton:hover {
+  transform: translateY(-2px);
+}
