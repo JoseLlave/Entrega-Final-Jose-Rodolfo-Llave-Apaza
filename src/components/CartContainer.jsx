@@ -28,7 +28,7 @@ function CartContainer() {
             onClick={() => navigate('/')}
           >
             <i className="bi bi-arrow-left me-2"></i>
-            Continuar comprando
+            Ir a la pagina principal
           </Button>
         </div>
       ) : (
