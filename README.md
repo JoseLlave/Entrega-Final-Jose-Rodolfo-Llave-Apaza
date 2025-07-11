@@ -1,4 +1,4 @@
-# Melos - E-commerce de Instrumentos Musicales 🎸
+# Melos - E-commerce de Productos y accesorios de tus cantantes favoritos
 
 ## Tecnologías Utilizadas
 - **Frontend**: React.js + JavaScript ES6
