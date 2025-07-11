@@ -4,7 +4,7 @@ import NavBar from "./components/Navbar/NavBar";
 import ItemListContainer from "./components/ItemListContainer";
 import ItemDetailContainer from "./components/ItemDetail/ItemDetailContainer";
 import CartContainer from "./components/CartContainer";
-import Checkout from "./components/Checkout"; // Importa el componente Checkout
+import Checkout from "./components/Checkout";
 
 function App() {
   return (
