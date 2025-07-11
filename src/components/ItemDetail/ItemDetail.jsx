@@ -1,11 +1,11 @@
-import { Card, Button, Badge, Row, Col, Stack } from 'react-bootstrap';
+import { Card, Button, Row, Col, Stack } from 'react-bootstrap';
 import { useNavigate } from 'react-router';
 import ItemCount from '../ItemCount';
 
 function ItemDetail({ item }) {
   const navigate = useNavigate();
 
-  if (!item) return null;
+  if (!item) return <div className="text-center my-5">Cargando producto...</div>;
 
   return (
     <Card className="border-0 shadow">
@@ -13,40 +13,31 @@ function ItemDetail({ item }) {
         <Col md={6} className="p-3">
           <Card.Img 
             variant="top" 
-            src={item.thumbnail} 
+            src={item.imagen}
             className="rounded"
             style={{ maxHeight: '500px', objectFit: 'contain' }}
+            onError={(e) => {
+              e.target.src = 'https://via.placeholder.com/500?text=Imagen+no+disponible';
+            }}
           />
         </Col>
         <Col md={6}>
           <Card.Body className="h-100 p-4 d-flex flex-column">
-            <Card.Title as="h2">{item.title}</Card.Title>
+            <Card.Title as="h2">{item.nombre}</Card.Title>
             <Card.Subtitle className="mb-3 text-muted">
-              {item.brand} • {item.category}
+              {item.categoria}
             </Card.Subtitle>
-            
-            <Badge bg={item.stock > 0 ? 'success' : 'danger'} className="mb-3">
-              {item.stock > 0 ? `En stock (${item.stock})` : 'Sin stock'}
-            </Badge>
-            
-            <Card.Text className="mb-4">{item.description}</Card.Text>
             
             <Stack gap={3} className="mt-auto">
               <div className="d-flex align-items-center">
-                <span className="fs-3 text-primary me-2">${item.price}</span>
-                {item.discountPercentage > 0 && (
-                  <Badge bg="danger" className="fs-6">
-                    {item.discountPercentage}% OFF
-                  </Badge>
-                )}
+                <span className="fs-3 text-primary me-2">${item.precio}</span>
               </div>
               
-              <ItemCount />
+              {/* Este componente YA INCLUYE el botón funcional */}
+              <ItemCount item={item} />
               
               <div className="d-grid gap-2 d-md-flex">
-                <Button variant="primary" size="lg">
-                  Agregar al carrito
-                </Button>
+                {/* ELIMINA este botón duplicado */}
                 <Button 
                   variant="outline-secondary" 
                   size="lg"

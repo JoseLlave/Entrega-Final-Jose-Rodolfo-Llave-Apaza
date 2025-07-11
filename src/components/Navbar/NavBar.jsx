@@ -8,14 +8,6 @@ import CartWidget from '../CartWidget';
 import styles from './NavBar.module.css';
 
 function NavBar() {
-  const [categories, setCategories] = useState([]);
-
-  useEffect(() => {
-    fetch('https://dummyjson.com/products/category-list')
-      .then(res => res.json())
-      .then(data => setCategories(data));
-  }, []);
-
   return (
     <Navbar expand="lg" className={styles.navbar} variant="dark" fixed="top">
       <Container>
@@ -29,24 +21,16 @@ function NavBar() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <NavDropdown 
-              title="Categorías" 
-              id="basic-nav-dropdown" 
-              menuVariant="dark"
-              className={styles.dropdownMenu}
-            >
-              {categories.map(cat => (
-                <NavDropdown.Item 
-                  key={cat}
-                  as={NavLink}
-                  to={`/category/${cat}`}
-                  className={styles.dropdownItem}
-                >
-                  {cat.split('-').map(word => 
-                    word.charAt(0).toUpperCase() + word.slice(1)
-                  ).join(' ')}
-                </NavDropdown.Item>
-              ))}
+            <NavDropdown title="Categorías" id="basic-nav-dropdown" className="dropdown-menu-custom">
+              <NavDropdown.Item as={NavLink} to="/category/camisetas" className="dropdown-item-custom">
+                Camisetas
+              </NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to="/category/accesorios" className="dropdown-item-custom">
+                Accesorios
+              </NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to="/category/posters" className="dropdown-item-custom">
+                Posters
+              </NavDropdown.Item>
             </NavDropdown>
           </Nav>
           <div className={styles.cartIcon}>
