@@ -1,7 +1,8 @@
-import { Button, ListGroup } from 'react-bootstrap';
+import { Button, ListGroup, Badge } from 'react-bootstrap';
 import { useNavigate } from 'react-router';
 import { useContext } from 'react';
 import CartContext from '../context/CartContext';
+import styles from './Cart.module.css';
 
 function CartContainer() {
   const { cart, eliminarDelCarrito, vaciarCarrito, getTotal } = useContext(CartContext);
@@ -11,52 +12,102 @@ function CartContainer() {
   const hayProductosSinStock = cart.some(item => item.cantidad > item.stock);
 
   return (
-    <div className='d-flex flex-column align-items-center mt-5'>
-      <ListGroup className='w-75'>
-        {cart.map(prod => (
-          <ListGroup.Item key={prod.id} className='d-flex justify-content-between align-items-center'>
-            <div>
-              <img 
-                src={prod.imagen} 
-                alt={prod.nombre} 
-                style={{ 
-                  width: '50px', 
-                  height: '50px',
-                  objectFit: 'contain',
-                  marginRight: '10px' 
-                }} 
-              />
-              {prod.nombre} x {prod.cantidad} - ${(prod.precio * prod.cantidad).toFixed(2)}
-              <div className={`small ${prod.cantidad > prod.stock ? 'text-danger' : 'text-muted'}`}>
-                Stock: {prod.stock} | Disponible: {prod.stock - prod.cantidad}
-              </div>
-            </div>
-            <Button variant='danger' size='sm' onClick={() => eliminarDelCarrito(prod.id)}>
-              Eliminar
-            </Button>
-          </ListGroup.Item>
-        ))}
-      </ListGroup>
-
-      <h2 className='mt-3'>TOTAL: ${total.toFixed(2)}</h2>
+    <div className={styles.cartContainer}>
+      <h1 className={styles.cartTitle}>
+        <i className="bi bi-cart3 me-2"></i>
+        Tu Carrito de Compras
+      </h1>
       
-      {hayProductosSinStock && (
-        <div className="text-danger mb-2">
-          Algunos productos no tienen suficiente stock
+      {cart.length === 0 ? (
+        <div className={styles.emptyCart}>
+          <i className="bi bi-cart-x" style={{fontSize: '3rem', color: '#6c757d'}}></i>
+          <h3 className="mt-3">Tu carrito está vacío</h3>
+          <Button 
+            variant="primary" 
+            className={styles.continueShoppingBtn}
+            onClick={() => navigate('/')}
+          >
+            <i className="bi bi-arrow-left me-2"></i>
+            Continuar comprando
+          </Button>
         </div>
+      ) : (
+        <>
+          <ListGroup className={styles.productList}>
+            {cart.map(prod => (
+              <ListGroup.Item key={prod.id} className={styles.productItem}>
+                <div className={styles.productImageContainer}>
+                  <img 
+                    src={prod.imagen} 
+                    alt={prod.nombre} 
+                    className={styles.productImage}
+                    onError={(e) => {
+                      e.target.src = 'https://via.placeholder.com/100x100/2a2a2a/cccccc?text=Imagen+no+disponible';
+                    }}
+                  />
+                </div>
+                
+                <div className={styles.productDetails}>
+                  <h5 className={styles.productName}>{prod.nombre}</h5>
+                  <div className={styles.productInfo}>
+                    <span className={styles.productPrice}>${prod.precio.toFixed(2)} c/u</span>
+                    <span className={styles.productQuantity}>x {prod.cantidad}</span>
+                    <span className={styles.productSubtotal}>${(prod.precio * prod.cantidad).toFixed(2)}</span>
+                  </div>
+                  
+                  <div className={`${styles.stockInfo} ${prod.cantidad > prod.stock ? styles.stockError : ''}`}>
+                    <i className="bi bi-box-seam me-1"></i>
+                    Stock: {prod.stock} | Disponible: {prod.stock - prod.cantidad}
+                  </div>
+                </div>
+                
+                <Button 
+                  variant="outline-danger" 
+                  className={styles.deleteButton}
+                  onClick={() => eliminarDelCarrito(prod.id)}
+                >
+                  <i className="bi bi-trash"></i>
+                </Button>
+              </ListGroup.Item>
+            ))}
+          </ListGroup>
+
+          <div className={styles.summaryContainer}>
+            <div className={styles.totalContainer}>
+              <span className={styles.totalLabel}>TOTAL:</span>
+              <span className={styles.totalAmount}>${total.toFixed(2)}</span>
+            </div>
+            
+            {hayProductosSinStock && (
+              <div className={styles.stockWarning}>
+                <i className="bi bi-exclamation-triangle-fill me-2"></i>
+                Algunos productos no tienen suficiente stock
+              </div>
+            )}
+            
+            <div className={styles.buttonsContainer}>
+              <Button 
+                variant="outline-danger" 
+                className={styles.clearCartBtn}
+                onClick={vaciarCarrito}
+              >
+                <i className="bi bi-x-circle me-2"></i>
+                Vaciar carrito
+              </Button>
+              
+              <Button 
+                variant="primary" 
+                className={styles.checkoutBtn}
+                onClick={() => navigate('/checkout')} 
+                disabled={cart.length === 0 || hayProductosSinStock}
+              >
+                <i className="bi bi-credit-card me-2"></i>
+                Proceder al pago
+              </Button>
+            </div>
+          </div>
+        </>
       )}
-      
-      <Button className='w-75 mt-3' variant='danger' onClick={vaciarCarrito}>
-        Vaciar carrito
-      </Button>
-      
-      <Button 
-        className='w-75 mt-3' 
-        onClick={() => navigate('/checkout')} 
-        disabled={cart.length === 0 || hayProductosSinStock}
-      >
-        Pagar
-      </Button>
     </div>
   );
 }

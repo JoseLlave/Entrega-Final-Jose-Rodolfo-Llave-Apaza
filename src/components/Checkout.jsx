@@ -1,11 +1,17 @@
 import { useState, useContext, useEffect } from 'react';
-import { Form, Button, Alert } from 'react-bootstrap';
+import { Form, Button, Alert, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router';
 import { createOrder, updateProductStock } from '../firebase/db';
+import CartContext from '../context/CartContext';
+import styles from './Checkout.module.css';
 
 function Checkout() {
   const { cart, vaciarCarrito, getTotal } = useContext(CartContext);
-  const [formData, setFormData] = useState({ email: '', nombre: '', telefono: '' });
+  const [formData, setFormData] = useState({ 
+    email: '', 
+    nombre: '', 
+    telefono: '' 
+  });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -59,11 +65,15 @@ function Checkout() {
 
   if (cart.length === 0) {
     return (
-      <div className="text-center mt-5">
-        <Alert variant="warning">
+      <div className={`${styles.emptyCartContainer} text-center`}>
+        <Alert variant="warning" className={styles.emptyCartAlert}>
           Tu carrito está vacío. Agrega productos antes de proceder al pago.
         </Alert>
-        <Button variant="primary" onClick={() => navigate('/')}>
+        <Button 
+          variant="primary" 
+          onClick={() => navigate('/')}
+          className={styles.backButton}
+        >
           Volver a la tienda
         </Button>
       </div>
@@ -71,66 +81,102 @@ function Checkout() {
   }
 
   return (
-    <div className='d-flex justify-content-center mt-5'>
-      <Form className='w-50' onSubmit={handleSubmit}>
-        {error && <Alert variant="danger">{error}</Alert>}
-        
-        <h2 className='mb-4'>Finalizar compra</h2>
-        
-        <Form.Group className="mb-3" controlId="email">
-          <Form.Label>Email</Form.Label>
-          <Form.Control 
-            type="email" 
-            placeholder="pepo@example.com" 
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-        </Form.Group>
-        
-        <Form.Group className="mb-3" controlId="nombre">
-          <Form.Label>Nombre completo</Form.Label>
-          <Form.Control 
-            type="text" 
-            placeholder="Pepo Perez" 
-            value={formData.nombre}
-            onChange={handleChange}
-            required
-          />
-        </Form.Group>
-        
-        <Form.Group className="mb-3" controlId="telefono">
-          <Form.Label>Teléfono</Form.Label>
-          <Form.Control 
-            type="tel" 
-            placeholder="+5491123434565" 
-            value={formData.telefono}
-            onChange={handleChange}
-            required
-          />
-        </Form.Group>
-        
-        <div className="mt-4">
-          <h4>Resumen de compra</h4>
-          <ul>
-            {cart.map(item => (
-              <li key={item.id}>
-                {item.nombre} x {item.cantidad} - ${item.precio * item.cantidad}
-              </li>
-            ))}
-          </ul>
-          <h5>Total: ${getTotal().toFixed(2)}</h5>
-        </div>
-        
-        <Button 
-          variant="primary" 
-          type="submit"
-          disabled={loading}
-          className='mt-3 w-100'
-        >
-          {loading ? 'Procesando...' : 'Confirmar compra'}
-        </Button>
-      </Form>
+    <div className={styles.checkoutContainer}>
+      <Card className={styles.checkoutCard}>
+        <Card.Body>
+          <Form onSubmit={handleSubmit}>
+            {error && <Alert variant="danger" className={styles.errorAlert}>{error}</Alert>}
+            
+            <Card.Title className={styles.checkoutTitle}>
+              <i className="bi bi-credit-card-fill me-2"></i>
+              Finalizar Compra
+            </Card.Title>
+            
+            <Form.Group className="mb-4" controlId="email">
+              <Form.Label className={styles.formLabel}>Correo Electrónico</Form.Label>
+              <Form.Control 
+                type="email" 
+                placeholder="juan.perez@ejemplo.com" 
+                value={formData.email}
+                onChange={handleChange}
+                required
+                className={styles.formInput}
+              />
+              <Form.Text className={styles.helpText}>
+                Te enviaremos el comprobante a este email
+              </Form.Text>
+            </Form.Group>
+            
+            <Form.Group className="mb-4" controlId="nombre">
+              <Form.Label className={styles.formLabel}>Nombre Completo</Form.Label>
+              <Form.Control 
+                type="text" 
+                placeholder="Juan Pérez" 
+                value={formData.nombre}
+                onChange={handleChange}
+                required
+                className={styles.formInput}
+              />
+            </Form.Group>
+            
+            <Form.Group className="mb-4" controlId="telefono">
+              <Form.Label className={styles.formLabel}>Teléfono</Form.Label>
+              <Form.Control 
+                type="tel" 
+                placeholder="+54 11 2345-6789" 
+                value={formData.telefono}
+                onChange={handleChange}
+                required
+                className={styles.formInput}
+              />
+              <Form.Text className={styles.helpText}>
+                Incluye código de área
+              </Form.Text>
+            </Form.Group>
+            
+            <Card className={styles.summaryCard}>
+              <Card.Body>
+                <h4 className={styles.summaryTitle}>
+                  <i className="bi bi-receipt me-2"></i>
+                  Resumen de Compra
+                </h4>
+                <ul className={styles.productList}>
+                  {cart.map(item => (
+                    <li key={item.id} className={styles.productItem}>
+                      <span className={styles.productName}>{item.nombre}</span>
+                      <span className={styles.productQuantity}>x {item.cantidad}</span>
+                      <span className={styles.productPrice}>${(item.precio * item.cantidad).toFixed(2)}</span>
+                    </li>
+                  ))}
+                </ul>
+                <div className={styles.totalContainer}>
+                  <span className={styles.totalLabel}>Total:</span>
+                  <span className={styles.totalAmount}>${getTotal().toFixed(2)}</span>
+                </div>
+              </Card.Body>
+            </Card>
+            
+            <Button 
+              variant="primary" 
+              type="submit"
+              disabled={loading}
+              className={styles.submitButton}
+            >
+              {loading ? (
+                <>
+                  <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  Procesando...
+                </>
+              ) : (
+                <>
+                  <i className="bi bi-check-circle-fill me-2"></i>
+                  Confirmar Compra
+                </>
+              )}
+            </Button>
+          </Form>
+        </Card.Body>
+      </Card>
     </div>
   );
 }
