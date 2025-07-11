@@ -1,7 +1,7 @@
 # Melos - E-commerce de Productos y accesorios de tus cantantes favoritos
 
 ## Tecnologías Utilizadas
-- **Frontend**: React.js + JavaScript ES6
+- **Frontend**: React.js + JavaScript
 - **Estilos**: Bootstrap 5 + CSS Modules
 - **Backend**: Firebase
 - **Control de Versiones**: Git/GitHub
