@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { NavLink } from 'react-router';
+import { Link } from 'react-router';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -11,7 +11,7 @@ function NavBar() {
   return (
     <Navbar expand="lg" className={styles.navbar} variant="dark" fixed="top">
       <Container>
-        <Navbar.Brand as={NavLink} to="/">
+        <Navbar.Brand as={Link} to="/">
           <img 
             src="https://i.ibb.co/r2pQ5CN5/logonuevo.png" 
             alt="Logo" 
@@ -22,13 +22,13 @@ function NavBar() {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <NavDropdown title="Categorías" id="basic-nav-dropdown" className="dropdown-menu-custom">
-              <NavDropdown.Item as={NavLink} to="/category/camisetas" className="dropdown-item-custom">
+              <NavDropdown.Item as={Link} to="/category/camisetas" className="dropdown-item-custom">
                 Camisetas
               </NavDropdown.Item>
-              <NavDropdown.Item as={NavLink} to="/category/accesorios" className="dropdown-item-custom">
+              <NavDropdown.Item as={Link} to="/category/accesorios" className="dropdown-item-custom">
                 Accesorios
               </NavDropdown.Item>
-              <NavDropdown.Item as={NavLink} to="/category/posters" className="dropdown-item-custom">
+              <NavDropdown.Item as={Link} to="/category/posters" className="dropdown-item-custom">
                 Posters
               </NavDropdown.Item>
             </NavDropdown>
@@ -41,4 +41,5 @@ function NavBar() {
     </Navbar>
   );
 }
+
 export default NavBar;
