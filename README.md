@@ -2,7 +2,7 @@
 
 ## Tecnologías Utilizadas
 - **Frontend**: React.js + JavaScript
-- **Estilos**: Bootstrap 5 + CSS Modules
+- **Estilos**: Bootstrap + CSS Modules
 - **Backend**: Firebase
 - **Control de Versiones**: Git/GitHub
 
